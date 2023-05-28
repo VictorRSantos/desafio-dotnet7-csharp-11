@@ -2,8 +2,9 @@
 {
     private static void Main(string[] args)
     {
-        List<string[]> lista = new List<string[]>();
-        List<string[]> contaCorrente = new List<string[]>();
+        List<dynamic> listaDeClientes = new List<dynamic>();
+        List<dynamic> contaCorrente = new List<dynamic>();
+
         while (true)
         {
 
@@ -49,14 +50,14 @@
             }
 
             if (sair) break;
-           
+
         }
 
         void mostrarContaCorrente()
         {
             Console.Clear();
 
-            if (lista.Count == 0 || contaCorrente.Count == 0)
+            if (listaDeClientes.Count == 0 || contaCorrente.Count == 0)
             {
                 mensagem("Não existe clientes ou não existe movimentações em conta corrente, cadastre o cliente e faça crédito em conta");
                 return;
@@ -64,18 +65,18 @@
 
             var cliente = capturaCliente();
 
-            var contaCorrentCliente = extratoCliente(cliente[0]);
+            var contaCorrentCliente = extratoCliente(cliente.Id);
 
             foreach (var contaCorrente in contaCorrentCliente)
             {
-                Console.WriteLine($"Data: {contaCorrente[2]}");
-                Console.WriteLine($"Valor: {contaCorrente[1]}");
+                Console.WriteLine($"Data: {contaCorrente.Data.ToString("dd/MM/yyyy HH:mm:ss")}");
+                Console.WriteLine($"Valor: {contaCorrente.Valor}");
                 Console.WriteLine($"--------------------------------");
             }
 
             Console.WriteLine($"""
-        O valor total da conta do cliente {cliente[1]} é de:
-        R$: {saldoCliente(cliente[0], contaCorrentCliente)}        
+        O valor total da conta do cliente {cliente.Nome} é de:
+        R$: {saldoCliente(cliente.Id, contaCorrentCliente)}        
         """);
 
             Thread.Sleep(6000);
@@ -91,39 +92,42 @@
             Console.Clear();
             Console.WriteLine("Digite o valor do crédito:");
             double credito = Convert.ToDouble(Console.ReadLine());
-            string[] creditoConta = new string[3];
 
-            creditoConta[0] = cliente[0];
-            creditoConta[1] = credito.ToString();
-            creditoConta[2] = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+            contaCorrente.Add(new
+            {
+                IdCliente = cliente.Id,
+                Valor = credito,
+                Data = DateTime.Now
+            });
 
-            contaCorrente.Add(creditoConta);
-
-            var idCliente = cliente[0];
             mensagem($"""
     Crédito adicionado com sucesso...
-    Saldo do cliente {cliente[1]} é de R$ {saldoCliente(idCliente, contaCorrente)}
+    Saldo do cliente {cliente.Nome} é de R$ {saldoCliente(cliente.Id, contaCorrente)}
     """);
         }
 
-        List<string[]> extratoCliente(string idCliente)
+        List<dynamic> extratoCliente(string idCliente)
         {
-            var contaCorrenteCliente = contaCorrente.FindAll(cc => cc[0] == idCliente);
+            var contaCorrenteCliente = contaCorrente.FindAll(cc => cc.IdCliente == idCliente);
 
-            if (contaCorrenteCliente.Count == 0) return new List<string[]>();
+            if (contaCorrenteCliente.Count == 0) return new List<dynamic>();
 
             return contaCorrenteCliente;
         }
 
-        double saldoCliente(string idCliente, List<string[]>? contaCorrenteCliente = null)
+        double saldoCliente(string idCliente, List<dynamic>? contaCorrenteCliente = null)
         {
             if (contaCorrenteCliente == null)
-                contaCorrente = extratoCliente(idCliente);
-
-            return contaCorrenteCliente.Sum(cc => Convert.ToDouble(cc[1]));
+                contaCorrenteCliente = extratoCliente(idCliente);
+           
+            double soma = 0;
+            
+            contaCorrenteCliente.ForEach(cc => soma += cc.Valor);
+            
+            return soma;
         }
 
-        string[] capturaCliente()
+        dynamic capturaCliente()
         {
             listarClientesCadastrados();
 
@@ -131,11 +135,11 @@
 
             var idCliente = Console.ReadLine()?.Trim();
 
-            string[]? cliente = lista.Find(c => c[0] == idCliente);
+            var cliente = listaDeClientes.Find(c => c.Id == idCliente);
 
             if (cliente == null)
             {
-                mensagem("Cliente não encontrado na lista, digite o ID corretamente da lista de clientes");
+                mensagem("Cliente não encontrado na listaDeClientes, digite o ID corretamente da listaDeClientes de clientes");
                 Console.Clear();
 
                 menuCadastraClienteSeNaoExiste();
@@ -175,27 +179,27 @@
 
         void listarClientesCadastrados()
         {
-            if (lista.Count == 0)
+            if (listaDeClientes.Count == 0)
             {
                 menuCadastraClienteSeNaoExiste();
 
             }
 
-            mostrarClientes(false, 0, "============[ Selecione um cliente da lista ]===========");
+            mostrarClientes(false, 0, "============[ Selecione um cliente da listaDeClientes ]===========");
         }
 
-        void mostrarClientes(bool sleep = true, int timerSleep = 2000, string header = "============[ Lista de clientes ]===========")
+        void mostrarClientes(bool sleep = true, int timerSleep = 2000, string header = "============[ ListaDeClientes de clientes ]===========")
         {
             Console.Clear();
             Console.WriteLine(header);
 
-            lista.ForEach(cliente =>
+            listaDeClientes.ForEach(cliente =>
             {
                 Console.WriteLine($"""
-        Id: {cliente[0]}
-        Nome: {cliente[1]}
-        Telefone: {cliente[2]}
-        Email: {cliente[3]}
+        Id: {cliente.Id}
+        Nome: {cliente.Nome}
+        Telefone: {cliente.Telefone}
+        Email: {cliente.Email}
         ---------------------------------------------------------------------
         """);
                 Console.WriteLine();
@@ -223,9 +227,9 @@
             Console.Write($"Informe o email do cliente {nomeCliente}: ");
             var email = Console.ReadLine();
 
-            if (lista.Count > 0)
+            if (listaDeClientes.Count > 0)
             {
-                string[]? cli = lista.Find(c => c[2] == telefone);
+                var cli = listaDeClientes.Find(c => c.Telefone == telefone);
                 if (cli != null)
                 {
                     mensagem($"Cliente já cadastrado com este telefone {telefone}, cadastre novamente");
@@ -233,14 +237,16 @@
                 }
             }
 
-            string[] cliente = new string[4];
 
-            cliente[0] = id;
-            cliente[1] = nomeCliente ?? "[Sem Nome]";
-            cliente[2] = telefone ?? "[Sem Telefone]";
-            cliente[3] = email ?? "[Sem Email]";
+            listaDeClientes.Add(new
+            {
+                Id = id,
+                Nome = nomeCliente ?? "[Sem Nome]",
+                Telefone = telefone ?? "[Sem Telefone]",
+                Email = email ?? "[Sem Email]"
 
-            lista.Add(cliente);
+            });
+
             mensagem($""" {nomeCliente} cadastrado com sucesso. """);
         }
 
@@ -259,21 +265,18 @@
             Console.Clear();
             Console.WriteLine("Digite o valor de retirada:");
             double credito = Convert.ToDouble(Console.ReadLine());
-            string[] creditoConta = new string[3];
 
-            creditoConta[0] = cliente[0];
-            creditoConta[1] = $"-{credito}";
-            creditoConta[2] = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+            contaCorrente.Add(new
+            {
+                IdCliente = cliente.Id,
+                Valor = credito * -1,
+                Data = DateTime.Now
+            });
 
-            contaCorrente.Add(creditoConta);
-
-            var idCliente = cliente[0];
             mensagem($"""
                 Retirada realizada com sucesso...
-                Saldo do cliente {cliente[1]} é de R$ {saldoCliente(idCliente, contaCorrente)}
+                Saldo do cliente {cliente.Nome} é de R$ {saldoCliente(cliente.Id)}
                 """);
         }
     }
-
-
 }
