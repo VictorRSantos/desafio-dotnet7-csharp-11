@@ -1,15 +1,5 @@
-F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\bin\Debug\net7.0\logica.exe
-F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\bin\Debug\net7.0\logica.deps.json
-F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\bin\Debug\net7.0\logica.runtimeconfig.json
-F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\bin\Debug\net7.0\logica.dll
-F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\bin\Debug\net7.0\logica.pdb
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\obj\Debug\net7.0\logica.csproj.AssemblyReference.cache
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\obj\Debug\net7.0\logica.GeneratedMSBuildEditorConfig.editorconfig
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\obj\Debug\net7.0\logica.AssemblyInfoInputs.cache
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\obj\Debug\net7.0\logica.AssemblyInfo.cs
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\obj\Debug\net7.0\logica.csproj.CoreCompileInputs.cache
-F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\obj\Debug\net7.0\logica.dll
-F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\obj\Debug\net7.0\refint\logica.dll
-F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\obj\Debug\net7.0\logica.pdb
-F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\obj\Debug\net7.0\logica.genruntimeconfig.cache
-F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\obj\Debug\net7.0\ref\logica.dll
