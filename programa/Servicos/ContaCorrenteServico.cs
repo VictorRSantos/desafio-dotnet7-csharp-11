@@ -1,6 +1,6 @@
-using logica.Models;
+using Programa.Models;
 
-namespace logica.Servicos;
+namespace Programa.Servicos;
 
 public class ContaCorrenteServico
 {
@@ -10,7 +10,6 @@ public class ContaCorrenteServico
         if(instancia == null) instancia = new ContaCorrenteServico();
         return instancia;
     }
-    
     public List<ContaCorrente> Lista = new List<ContaCorrente>();
     public List<ContaCorrente> ExtratoCliente(string idCliente)
     {

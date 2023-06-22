@@ -1,6 +1,6 @@
-using logica.Models;
+using Programa.Models;
 
-namespace logica.Servicos;
+namespace Programa.Servicos;
 
 public class ClienteServico
 {
@@ -15,9 +15,6 @@ public class ClienteServico
     }
 
     public List<Cliente> Lista = new List<Cliente>();
-
-    
-
 
 
 }

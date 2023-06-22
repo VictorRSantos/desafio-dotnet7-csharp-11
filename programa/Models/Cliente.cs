@@ -1,4 +1,4 @@
-namespace logica.Models;
+namespace Programa.Models;
 
 // Classe Struct, registra os dados na mémoria stack
 public struct Cliente
