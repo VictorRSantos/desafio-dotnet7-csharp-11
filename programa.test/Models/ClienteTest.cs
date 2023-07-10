@@ -10,8 +10,7 @@ public class ClienteTest
     [TestMethod]
     public void TestandoPropriedadesDaClasse()
     {
-        var cliente = new Cliente();
-        cliente.Id = "23432123";
+        var cliente = new Cliente(){Id = "23432123"};
         cliente.Nome = "Marcela";
         cliente.Email = "ma@teste.com";
         cliente.Telefone = "(11)11111-1111";
