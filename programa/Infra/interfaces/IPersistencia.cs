@@ -1,10 +1,13 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Programa.Infra.interfaces;
-public interface IPersistencia
+public interface IPersistencia<T>
 {
-    Task Salvar(object objeto);
-    void Excluir(object objeto);
-    void Alterar(string Id, object objeto);
-    List<Object> Todos();
-    List<Object> BuscaPorId(string Id);    
+    Task Salvar([NotNull] T objeto);
+    Task ExcluirTudo();    
+    Task Excluir([NotNull] T objeto);
+    Task Alterar(string id, T objeto);
+    Task<List<T>> Todos();
+    Task<T> BuscaPorId(string id);    
     string GetLocalGravacao();
 }

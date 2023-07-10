@@ -26,6 +26,7 @@ public class ContaCorrenteServicoTest
             (
                 new ContaCorrente()
                 {
+                    Id = Guid.NewGuid().ToString(),
                     IdCliente = idCliente,
                     Valor = valor,
                     Data = DateTime.Now
@@ -38,7 +39,7 @@ public class ContaCorrenteServicoTest
     [TestMethod]
     public void TestandoUnicaInstanciaDoServico()
     {
-        ContaCorrenteServico.Get().Lista.Add(new ContaCorrente() { IdCliente = "2122222" });
+        ContaCorrenteServico.Get().Lista.Add(new ContaCorrente() {Id = Guid.NewGuid().ToString(), IdCliente = "2122222" });
 
         Assert.IsNotNull(ContaCorrenteServico.Get());
         Assert.IsNotNull(ContaCorrenteServico.Get().Lista);

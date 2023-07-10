@@ -10,7 +10,7 @@ public class ClienteServicoTest
     [TestMethod]
     public void TestandoUnicaInstanciaDoServico()
     {
-        ClienteServico.Get().Lista.Add(new Cliente { Nome = "test" });
+        ClienteServico.Get().Lista.Add(new Cliente { Id = "Id", Nome = "test" });
 
         Assert.IsNotNull(ClienteServico.Get());
         Assert.IsNotNull(ClienteServico.Get().Lista);
