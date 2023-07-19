@@ -1,20 +1,15 @@
+using Programa.Infra.interfaces;
 using Programa.Models;
 
 namespace Programa.Servicos;
 
 public class ClienteServico
 {
-    private ClienteServico(){}
-
-    private static ClienteServico instancia = default!;
-
-    public static ClienteServico Get()
+    public IPersistencia<Cliente> Persistencia;
+    public ClienteServico(IPersistencia<Cliente> persistencia)
     {
-        if(instancia == null) instancia = new ClienteServico();
-        return instancia;
-    }
-
-    public List<Cliente> Lista = new List<Cliente>();
-
+        this.Persistencia = persistencia;
+    }   
+  
 
 }

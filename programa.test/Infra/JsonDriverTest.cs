@@ -93,7 +93,7 @@ public class JsonDriverTest
 
          var clienteDb = await jsonDriver.BuscaPorId(cliente.Id);
 
-         Assert.AreEqual(cliente.Nome, clienteDb.Nome);
+         Assert.AreEqual(cliente.Nome, clienteDb?.Nome);
 
     }
 
@@ -118,31 +118,31 @@ public class JsonDriverTest
 
          var clienteDb = await jsonDriver.BuscaPorId(cliente.Id);
 
-         Assert.AreEqual("Victor Teste", clienteDb.Nome);
+         Assert.AreEqual("Victor Teste", clienteDb?.Nome);
 
     }
 
      [TestMethod]
     public async Task TestandoExcluirEntidade()
     {
-        var jsonDriver = new JsonDriver<Cliente>(this.caminhoArquivoTest);
+        var jsonDriver = new JsonDriver<ContaCorrente>(this.caminhoArquivoTest);
 
-        var cliente = new Cliente()
+        var contaCorrente = new ContaCorrente()
         {
             Id = Guid.NewGuid().ToString(),
-            Nome = "Victor",
-            Email = "victor@email.com",
-            Telefone = "11888899999"
+            IdCliente = Guid.NewGuid().ToString(),
+            Valor = 200,
+            Data = DateTime.Now
         };
 
-         await jsonDriver.Salvar(cliente);         
-         var objtDb = await jsonDriver.BuscaPorId(cliente.Id);
+         await jsonDriver.Salvar(contaCorrente);         
+         var objtDb = await jsonDriver.BuscaPorId(contaCorrente.Id);
             
          Assert.IsNotNull(objtDb);
-         Assert.IsNotNull(objtDb.Id);
+         Assert.IsNotNull(objtDb?.Id);
 
-         await jsonDriver.Excluir(cliente);
-         var objtDb2 = await jsonDriver.BuscaPorId(cliente.Id);
+         await jsonDriver.Excluir(contaCorrente);
+         var objtDb2 = await jsonDriver.BuscaPorId(contaCorrente.Id);
 
          Assert.IsNull(objtDb2);         
     }

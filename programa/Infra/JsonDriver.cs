@@ -18,18 +18,18 @@ public class JsonDriver<T> : IPersistencia<T>
         throw new NotImplementedException();
     }
 
-    public async Task<T> BuscaPorId(string id)
+    public async Task<T?> BuscaPorId(string id)
     {
         var lista = await Todos();
         return buscaListaId(lista, id);
     }
 
-    private T buscaListaId([NotNull]List<T> lista, string id)
+    private T? buscaListaId(List<T> lista, string id)
     {
         return lista.Find(o => o?.GetType()?.GetProperty("Id")?.GetValue(o)?.ToString() == id);
     }
 
-    public async Task Excluir([NotNull] T objeto)
+    public async Task Excluir(T objeto)
     {
         var lista = await Todos();
         
@@ -41,7 +41,7 @@ public class JsonDriver<T> : IPersistencia<T>
     public string GetLocalGravacao() => this.localGravacao;
 
     
-    public async Task Salvar([NotNull] T objeto)
+    public async Task Salvar(T objeto)
     {
         if (objeto == null) return;
 

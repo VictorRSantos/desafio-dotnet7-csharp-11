@@ -1,6 +1,12 @@
 ﻿using Programa.Servicos;
 using Programa.Models;
+using Programa.Infra;
+string localGravacaoDev = Environment.GetEnvironmentVariable("LOCAL_GRAVACAO_DEV_DESAFIO_DOTNET7") ?? "/%temp%";
+ClienteServico clienteServico = new ClienteServico(new JsonDriver<Cliente>(localGravacaoDev));
+ContaCorrenteServico contaCorrenteServico = new ContaCorrenteServico(new JsonDriver<ContaCorrente>(localGravacaoDev));
 
+async Task<List<Cliente>> TodosClientes() => await clienteServico.Persistencia.Todos();
+async Task<List<ContaCorrente>> TodosExtratos() => await contaCorrenteServico.Persistencia.Todos();
 
 while (true)
 {
@@ -23,19 +29,19 @@ while (true)
     {
         case "1":
             Console.Clear();
-            cadastrarCliente();
+            await cadastrarCliente();
             break;
         case "2":
             Console.Clear();
-            mostrarContaCorrente();
+            await mostrarContaCorrente();
             break;
         case "3":
             Console.Clear();
-            adicionarCreditoCliente();
+            await adicionarCreditoCliente();
             break;
         case "4":
             Console.Clear();
-            FazendoDebitoCliente();
+            await FazendoDebitoCliente();
             break;
         case "5":
             Console.Clear();
@@ -50,19 +56,21 @@ while (true)
 
 }
 
-void mostrarContaCorrente()
+async Task mostrarContaCorrente()
 {
     Console.Clear();
 
-    if (ClienteServico.Get().Lista.Count == 0 || ContaCorrenteServico.Get().Lista.Count == 0)
+    var clientes = await TodosClientes();
+    var dadosNoExtrato = await TodosExtratos();
+    if (clientes.Count == 0 || dadosNoExtrato.Count == 0)
     {
         mensagem("Não existe clientes ou não existe movimentações em conta corrente, cadastre o cliente e faça crédito em conta");
         return;
     }
 
-    var cliente = capturaCliente();
+    var cliente = await capturaCliente();
 
-    var contaCorrentCliente = ContaCorrenteServico.Get().ExtratoCliente(cliente.Id);
+    var contaCorrentCliente = await contaCorrenteServico.ExtratoCliente(cliente.Id);
 
     foreach (var contaCorrente in contaCorrentCliente)
     {
@@ -73,30 +81,30 @@ void mostrarContaCorrente()
 
     Console.WriteLine($"""
         O valor total da conta do cliente {cliente.Nome} é de:
-        R$: {ContaCorrenteServico.Get().SaldoCliente(cliente.Id, contaCorrentCliente)}        
+        R$: {await contaCorrenteServico.SaldoCliente(cliente.Id, contaCorrentCliente)}        
         """);
 
     Thread.Sleep(6000);
 
 }
 
-void listarClientesCadastrados()
+async Task listarClientesCadastrados()
 {
-    if (ClienteServico.Get().Lista.Count == 0)
+    if ((await TodosClientes()).Count == 0)
     {
-        menuCadastraClienteSeNaoExiste();
+        await menuCadastraClienteSeNaoExiste();
 
     }
 
-    mostrarClientes(false, 0, "============[ Selecione um cliente da listaDeClientes ]===========");
+    await mostrarClientes(false, 0, "============[ Selecione um cliente da listaDeClientes ]===========");
 }
 
-void mostrarClientes(bool sleep = true, int timerSleep = 2000, string header = "============[ ListaDeClientes de clientes ]===========")
+async Task mostrarClientes(bool sleep = true, int timerSleep = 2000, string header = "============[ ListaDeClientes de clientes ]===========")
 {
     Console.Clear();
     Console.WriteLine(header);
 
-    ClienteServico.Get().Lista.ForEach(cliente =>
+    (await TodosClientes()).ForEach(cliente =>
     {
         Console.WriteLine($"""
         Id: {cliente.Id}
@@ -116,17 +124,17 @@ void mostrarClientes(bool sleep = true, int timerSleep = 2000, string header = "
     });
 }
 
-void adicionarCreditoCliente()
+async Task adicionarCreditoCliente()
 {
 
     Console.Clear();
-    var cliente = capturaCliente();
+    var cliente = await capturaCliente();
 
     Console.Clear();
     Console.WriteLine("Digite o valor do crédito:");
     double credito = Convert.ToDouble(Console.ReadLine());
 
-    ContaCorrenteServico.Get().Lista.Add(new ContaCorrente
+    (await TodosExtratos()).Add(new ContaCorrente
     {
         Id = Guid.NewGuid().ToString(),
         IdCliente = cliente.Id,
@@ -136,34 +144,40 @@ void adicionarCreditoCliente()
 
     mensagem($"""
     Crédito adicionado com sucesso...
-    Saldo do cliente {cliente.Nome} é de R$ {ContaCorrenteServico.Get().SaldoCliente(cliente.Id)}
+    Saldo do cliente {cliente.Nome} é de R$ {await contaCorrenteServico.SaldoCliente(cliente.Id)}
     """);
 }
 
-dynamic capturaCliente()
+async Task<Cliente> capturaCliente()
 {
-    listarClientesCadastrados();
-
+    await listarClientesCadastrados();
     Console.WriteLine("Digite o ID do cliente");
-
     var idCliente = Console.ReadLine()?.Trim();
+    if (string.IsNullOrWhiteSpace(idCliente))
+    {
+        mensagem("Id do cliente inválido");
+        Console.Clear();
 
-    Cliente? cliente = ClienteServico.Get().Lista.Find(c => c.Id == idCliente);
+        await menuCadastraClienteSeNaoExiste();
+
+        return await capturaCliente();
+    }
+    Cliente? cliente = await clienteServico.Persistencia.BuscaPorId(idCliente);
 
     if (cliente == null)
     {
         mensagem("Cliente não encontrado na listaDeClientes, digite o ID corretamente da listaDeClientes de clientes");
         Console.Clear();
 
-        menuCadastraClienteSeNaoExiste();
+        await menuCadastraClienteSeNaoExiste();
 
-        return capturaCliente();
+        return await capturaCliente();
     }
 
     return cliente;
 }
 
-void menuCadastraClienteSeNaoExiste()
+async Task menuCadastraClienteSeNaoExiste()
 {
     Console.WriteLine("""
         O que você deseja fazer ?
@@ -177,7 +191,7 @@ void menuCadastraClienteSeNaoExiste()
     switch (opcao)
     {
         case "1":
-            cadastrarCliente();
+            await cadastrarCliente();
             break;
         case "2":
             Environment.Exit(0);
@@ -190,7 +204,7 @@ void menuCadastraClienteSeNaoExiste()
     }
 }
 
-void cadastrarCliente()
+async Task cadastrarCliente()
 {
 
     string id = Guid.NewGuid().ToString();
@@ -204,24 +218,23 @@ void cadastrarCliente()
     Console.Write($"Informe o email do cliente {nomeCliente}: ");
     var email = Console.ReadLine();
 
-    if (ClienteServico.Get().Lista.Count > 0)
+    if ((await TodosClientes()).Count > 0)
     {
-        Cliente? cli = ClienteServico.Get().Lista.Find(c => c.Telefone == telefone);
+        Cliente? cli = (await TodosClientes()).Find(c => c.Telefone == telefone);
         if (cli != null)
         {
             mensagem($"Cliente já cadastrado com este telefone {telefone}, cadastre novamente");
-            cadastrarCliente();
+            await cadastrarCliente();
         }
     }
 
 
-    ClienteServico.Get().Lista.Add(new Cliente
+    await clienteServico.Persistencia.Salvar(new Cliente
     {
         Id = id,
         Nome = nomeCliente ?? "[Sem Nome]",
         Telefone = telefone ?? "[Sem Telefone]",
         Email = email ?? "[Sem Email]"
-
     });
 
     mensagem($""" {nomeCliente} cadastrado com sucesso. """);
@@ -234,16 +247,16 @@ void mensagem(string msg)
     Thread.Sleep(2000);
 }
 
-void FazendoDebitoCliente()
+async Task FazendoDebitoCliente()
 {
     Console.Clear();
-    var cliente = capturaCliente();
+    var cliente = await capturaCliente();
 
     Console.Clear();
     Console.WriteLine("Digite o valor de retirada:");
     double credito = Convert.ToDouble(Console.ReadLine());
 
-    ContaCorrenteServico.Get().Lista.Add(new ContaCorrente
+    (await TodosExtratos()).Add(new ContaCorrente
     {
         Id = Guid.NewGuid().ToString(),
         IdCliente = cliente.Id,
@@ -253,7 +266,7 @@ void FazendoDebitoCliente()
 
     mensagem($"""
                 Retirada realizada com sucesso...
-                Saldo do cliente {cliente.Nome} é de R$ {ContaCorrenteServico.Get().SaldoCliente(cliente.Id)}
+                Saldo do cliente {cliente.Nome} é de R$ {await contaCorrenteServico.SaldoCliente(cliente.Id)}
                 """);
 }
 

@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Programa.Infra;
 using Programa.Models;
 using Programa.Servicos;
 
@@ -7,92 +8,97 @@ namespace programa.test.Servicos;
 [TestClass]
 public class ContaCorrenteServicoTest
 {
-    # region Metodos de Setup
+    private ContaCorrenteServico contaCorrenteServico = new ContaCorrenteServico(new JsonDriver<ContaCorrente>(Environment.GetEnvironmentVariable("LOCAL_GRAVACAO_TEST_DESAFIO_DOTNET7") ?? "/%temp%"));
+
+    #region Metodos de Setup
+
     [TestInitialize()]
-    public void Startup()
+    public async Task Startup()
     {
-        ContaCorrenteServico.Get().Lista = new List<ContaCorrente>();
+        await contaCorrenteServico.Persistencia.ExcluirTudo();
     }
 
 
     #endregion
 
     #region Metodos Helpers
-    private void criaDadosContaFake(string idCliente, double[] valores)
+    private async Task criaDadosContaFake(string idCliente, double[] valores)
     {
         foreach (var valor in valores)
         {
-            ContaCorrenteServico.Get().Lista.Add
-            (
-                new ContaCorrente()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    IdCliente = idCliente,
-                    Valor = valor,
-                    Data = DateTime.Now
-                }
+            await contaCorrenteServico.Persistencia.Salvar(new ContaCorrente()
+            {
+                Id = Guid.NewGuid().ToString(),
+                IdCliente = idCliente,
+                Valor = valor,
+                Data = DateTime.Now
+            }
             );
         }
     }
     #endregion
-    
-    [TestMethod]
-    public void TestandoUnicaInstanciaDoServico()
-    {
-        ContaCorrenteServico.Get().Lista.Add(new ContaCorrente() {Id = Guid.NewGuid().ToString(), IdCliente = "2122222" });
 
-        Assert.IsNotNull(ContaCorrenteServico.Get());
-        Assert.IsNotNull(ContaCorrenteServico.Get().Lista);
-        Assert.AreEqual(1, ContaCorrenteServico.Get().Lista.Count());
+    [TestMethod]
+    public void TestandoInjecaoDeDependencia()
+    {
+        var contaCorrenteServicoCsv = new ContaCorrenteServico(new CsvDriver<ContaCorrente>(""));
+        Assert.IsNotNull(contaCorrenteServicoCsv);
+        Assert.IsNotNull(contaCorrenteServicoCsv.Persistencia);
+
+        var contaCorrenteServicoJson = new ContaCorrenteServico(new JsonDriver<ContaCorrente>(""));
+        Assert.IsNotNull(contaCorrenteServicoJson);
+        Assert.IsNotNull(contaCorrenteServicoJson.Persistencia);
+
     }
 
+
     [TestMethod]
-    public void TestandoRetornoDoExtrato()
+    public async Task TestandoRetornoDoExtrato()
     {
         // Preparação (Arrange)
         var idCliente = Guid.NewGuid().ToString();
-        criaDadosContaFake(idCliente, new double[] { 100.5, 10 });
+        await criaDadosContaFake(idCliente, new double[] { 100.5, 10 });
 
         // Processamento dados (act)
-        var extrato = ContaCorrenteServico.Get().ExtratoCliente(idCliente);
+        var extrato = await contaCorrenteServico.ExtratoCliente(idCliente);
 
         // Validação (Assert)
         Assert.AreEqual(2, extrato.Count());
     }
 
     [TestMethod]
-    public void TestandoRetornoDoExtratoComQuantidaAMais()
+    public async Task TestandoRetornoDoExtratoComQuantidaAMais()
     {
         // Preparação (Arrange)
         var idCliente = Guid.NewGuid().ToString();
-        criaDadosContaFake(idCliente, new double[] { 100.01, 50 });
+        await criaDadosContaFake(idCliente, new double[] { 100.01, 50 });
 
         var idCliente2 = Guid.NewGuid().ToString();
-        criaDadosContaFake(idCliente2, new double[] { 40 });
+        await criaDadosContaFake(idCliente2, new double[] { 40 });
 
 
         // Processamento dados (act)
-        var extrato = ContaCorrenteServico.Get().ExtratoCliente(idCliente2);
+        var extrato = await contaCorrenteServico.ExtratoCliente(idCliente2);
 
         // Validação (Assert)
         Assert.AreEqual(1, extrato.Count());
-        Assert.AreEqual(3, ContaCorrenteServico.Get().Lista.Count());
+        Assert.AreEqual(3, (await contaCorrenteServico.Persistencia.Todos()).Count());
     }
 
     [TestMethod]
-    public void TestandoSaldoDeUmCliente()
+    public async Task TestandoSaldoDeUmCliente()
     {
         // Preparação (Arrange)
         var idCliente = Guid.NewGuid().ToString();
-        criaDadosContaFake(idCliente, new double[] { 5, 5, 5, -10 });
-        criaDadosContaFake(Guid.NewGuid().ToString(), new double[] { 300, 45 });
+        await criaDadosContaFake(idCliente, new double[] { 5, 5, 5, -10 });
+        await criaDadosContaFake(Guid.NewGuid().ToString(), new double[] { 300, 45 });
 
         // Processamento dados (act)
-        var saldo = ContaCorrenteServico.Get().SaldoCliente(idCliente);
+        var saldo = await contaCorrenteServico.SaldoCliente(idCliente);
 
         // Validação (Assert)
         Assert.AreEqual(5, saldo);
-        Assert.AreEqual(6, ContaCorrenteServico.Get().Lista.Count());
+        Assert.AreEqual(6, (await contaCorrenteServico.Persistencia.Todos()).Count());
     }
 
 }
