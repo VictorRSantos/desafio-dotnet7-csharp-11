@@ -11,7 +11,9 @@ F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\programa.test.runtimeconfig.json
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\programa.test.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\programa.test.pdb
+F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\DnsClient.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\Microsoft.VisualStudio.CodeCoverage.Shim.dll
+F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\Microsoft.Extensions.Logging.Abstractions.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\Microsoft.TestPlatform.CoreUtilities.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\Microsoft.TestPlatform.PlatformAbstractions.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll
@@ -19,9 +21,17 @@ F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\Microsoft.TestPlatform.CrossPlatEngine.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\Microsoft.TestPlatform.Utilities.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\Microsoft.VisualStudio.TestPlatform.Common.dll
+F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\MongoDB.Driver.Legacy.dll
+F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\MongoDB.Bson.dll
+F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\MongoDB.Driver.dll
+F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\MongoDB.Driver.Core.dll
+F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\MongoDB.Libmongocrypt.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\Newtonsoft.Json.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\NuGet.Frameworks.dll
+F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\SharpCompress.dll
+F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\Snappier.dll
+F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\ZstdSharp.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\cs\Microsoft.TestPlatform.CoreUtilities.resources.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\cs\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\de\Microsoft.TestPlatform.CoreUtilities.resources.dll
@@ -100,6 +110,9 @@ F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\tr\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\zh-Hans\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\zh-Hant\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\runtimes\linux\native\libmongocrypt.so
+F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\runtimes\osx\native\libmongocrypt.dylib
+F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\runtimes\win\native\mongocrypt.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\programa.dll
 F:\2023\Torne-se-um-Programador\desafio_csharp_11\projetos\logica\programa.test\bin\Debug\net7.0\programa.pdb
