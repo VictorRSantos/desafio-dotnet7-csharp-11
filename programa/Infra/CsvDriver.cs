@@ -13,7 +13,7 @@ public class CsvDriver<T> : IPersistencia<T>
     }
 
     public string GetLocalGravacao() => this.localGravacao;
-    public async Task Salvar([NotNull] T objeto)
+    public async Task Salvar(T objeto)
     {
         var linhasDoCsv = new List<string>();
         var props = typeof(T).GetProperties();
@@ -42,12 +42,12 @@ public class CsvDriver<T> : IPersistencia<T>
         throw new NotImplementedException();
     }
 
-    public Task<T> BuscaPorId(string Id)
+    public Task<T?> BuscaPorId(string Id)
     {
         throw new NotImplementedException();
     }
 
-    public Task Excluir([NotNull] T objeto)
+    public Task Excluir(T objeto)
     {
         throw new NotImplementedException();
     }
